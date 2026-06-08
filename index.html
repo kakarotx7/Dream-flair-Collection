@@ -1,0 +1,134 @@
+import { useState, useCallback } from 'react';
+import { Category, CartItem, CustomerInfo, DeliveryOption, PaymentMethod, Product } from './types';
+import products from './data/products';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import ProductCatalog from './components/ProductCatalog';
+import CartDrawer from './components/CartDrawer';
+import Checkout from './components/Checkout';
+import OrderSuccessModal from './components/OrderSuccessModal';
+import Footer from './components/Footer';
+
+type View = 'shop' | 'checkout';
+
+export default function App() {
+  const [view, setView] = useState<View>('shop');
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [scrollTarget, setScrollTarget] = useState<Category | null>(null);
+  const [successModal, setSuccessModal] = useState(false);
+  const [successPhone, setSuccessPhone] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const subtotal = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+
+  const addToCart = useCallback((product: Product) => {
+    setCartItems((prev) => {
+      const existing = prev.find((item) => item.product.id === product.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.product.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      return [...prev, { product, quantity: 1 }];
+    });
+    setCartOpen(true);
+  }, []);
+
+  const updateQuantity = useCallback((productId: string, quantity: number) => {
+    if (quantity <= 0) {
+      setCartItems((prev) => prev.filter((item) => item.product.id !== productId));
+    } else {
+      setCartItems((prev) =>
+        prev.map((item) =>
+          item.product.id === productId ? { ...item, quantity } : item
+        )
+      );
+    }
+  }, []);
+
+  const removeItem = useCallback((productId: string) => {
+    setCartItems((prev) => prev.filter((item) => item.product.id !== productId));
+  }, []);
+
+  const handleCategoryClick = useCallback((category: string) => {
+    setView('shop');
+    setScrollTarget(category as Category);
+  }, []);
+
+  const handleShopNow = useCallback(() => {
+    setView('shop');
+    const el = document.getElementById('catalog');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }, []);
+
+  const handleConfirmOrder = useCallback(
+    (_info: CustomerInfo, _delivery: DeliveryOption, _payment: PaymentMethod, _transactionId?: string) => {
+      setSuccessPhone(_info.phone);
+      setCartItems([]);
+      setSuccessModal(true);
+      setView('shop');
+    },
+    []
+  );
+
+  if (view === 'checkout') {
+    return (
+      <>
+        <Navbar cartCount={cartCount} onCartClick={() => setCartOpen(true)} onCategoryClick={handleCategoryClick} searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+        <Checkout
+          items={cartItems}
+          subtotal={subtotal}
+          onBack={() => setView('shop')}
+          onConfirmOrder={handleConfirmOrder}
+        />
+        <CartDrawer
+          open={cartOpen}
+          items={cartItems}
+          onClose={() => setCartOpen(false)}
+          onUpdateQuantity={updateQuantity}
+          onRemoveItem={removeItem}
+          onCheckout={() => {
+            setCartOpen(false);
+            setView('checkout');
+          }}
+          subtotal={subtotal}
+        />
+        <OrderSuccessModal
+          open={successModal}
+          phone={successPhone}
+          onClose={() => setSuccessModal(false)}
+        />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Navbar cartCount={cartCount} onCartClick={() => setCartOpen(true)} onCategoryClick={handleCategoryClick} searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+      <Hero onShopNow={handleShopNow} />
+      <ProductCatalog products={products} searchQuery={searchQuery} onAddToCart={addToCart} scrollTarget={scrollTarget} />
+      <Footer />
+      <CartDrawer
+        open={cartOpen}
+        items={cartItems}
+        onClose={() => setCartOpen(false)}
+        onUpdateQuantity={updateQuantity}
+        onRemoveItem={removeItem}
+        onCheckout={() => {
+          setCartOpen(false);
+          setView('checkout');
+        }}
+        subtotal={subtotal}
+      />
+      <OrderSuccessModal
+        open={successModal}
+        phone={successPhone}
+        onClose={() => setSuccessModal(false)}
+      />
+    </>
+  );
+}
