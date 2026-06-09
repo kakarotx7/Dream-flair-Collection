@@ -331,11 +331,11 @@
                 </div>
         </div>
 
-        <div class="sticky-checkout-panel">
+        <div class="sticky-checkout-panel" id="checkout-terminal-panel">
             <h3 class="cart-title-row">🛒 Your Selected Cart Items</h3>
             
             <div class="cart-scroll-node" id="cart-items-container">
-                <p style="color: var(--text-muted); font-size:0.9rem; text-align:center; padding:1rem 0;">Your cart is empty. Click an item below to load selections.</p>
+                <p style="color: var(--text-muted); font-size:0.9rem; text-align:center; padding:1rem 0;">Your cart is empty. Click an item to add selections.</p>
             </div>
 
             <form id="checkout-execution-form" onsubmit="handleOrderSubmission(event)">
@@ -408,7 +408,6 @@
 
     <script>
         // CRITICAL EMAILJS CREDENTIAL KEYS ASSIGNMENT HOOKS
-        // --- INSTALLED LIVE FROM OWNER ACCOUNTS TERMINAL DATA MANIFESTS ---
         const EMAILJS_PUBLIC_KEY = "i6cvg7k3f9KKBjDwW"; 
         const EMAILJS_SERVICE_ID = "service_ktes3uf";
         const EMAILJS_TEMPLATE_ID = "template_65abuf8";
@@ -484,7 +483,7 @@
                     </div>
                     <div class="card-details">
                         <span class="card-cat">${product.category}</span>
-                        <h3 class="card-title" id="lbl-title-${product.id}">${product.name}</h3>
+                        <h3 class="brand-title" id="lbl-title-${product.id}" style="font-size:1.2rem; color:var(--text-dark); letter-spacing:0; text-align:left; font-weight:normal; margin:0;">${product.name}</h3>
                         <div class="card-price">Rs. <span id="lbl-price-${product.id}">${product.price}</span></div>
                         
                         <div class="card-sizes-row">
@@ -536,7 +535,7 @@
             }
 
             const constructedPayload = {
-                id: "df_" + Date.now(), // Generate dynamic safe structural uniqueness key identifier
+                id: "df_" + Date.now(), 
                 name: name,
                 category: category,
                 price: price,
@@ -548,7 +547,6 @@
             
             renderStorefrontCatalog();
             
-            // Clean interface inputs for immediate subsequent additions
             document.getElementById('new-item-name').value = '';
             document.getElementById('new-item-price').value = '';
             alert(`"${name}" pushed successfully into live tracking matrix memory!`);
@@ -568,9 +566,7 @@
 
                 localStorage.setItem('df_collection_catalog_manifest', JSON.stringify(activeInventoryStore));
                 
-                // Live hot refresh view states updates across layout grids instantly
-                document.getElementById(`lbl-title-${productId}`).innerText = updatedTitle;
-                document.getElementById(`lbl-price-${productId}`).innerText = updatedPrice;
+                renderStorefrontCatalog();
                 alert("Product UI parameters refactored successfully.");
             }
         }
@@ -600,7 +596,6 @@
             const sizeOptionElement = document.getElementById(`size-selector-${productId}`);
             const determinedSize = sizeOptionElement ? sizeOptionElement.value : "M";
 
-            // Uniqueness is defined by both product ID and target size choice
             const matchingIndex = runningCartState.findIndex(item => item.product.id === productId && item.size === determinedSize);
 
             if (matchingIndex !== -1) {
@@ -611,6 +606,12 @@
 
             redrawCartInterface();
             recalculateCartTotals();
+
+            // SENSORY OPTIMIZATION: Alert the user that the action succeeded and focus on checkout details
+            alert(`✨ "${coreItemData.name}" (Size ${determinedSize}) added to your bag!`);
+            
+            // Automatically scroll them down to the entry form box area smoothly
+            document.getElementById('checkout-terminal-panel').scrollIntoView({ behavior: 'smooth' });
         }
 
         function sliceCartItemQty(index) {
@@ -695,7 +696,6 @@
             const targetClientAddress = document.getElementById('cust-address').value.trim();
             const finalAmountDue = document.getElementById('metric-grandtotal').innerText;
 
-            // Compile structured text string outlining exact selected purchase options
             let ordersBreakdownString = "";
             runningCartState.forEach((item, index) => {
                 ordersBreakdownString += `${index + 1}. Item: ${item.product.name} [Size: ${item.size}] | Quantity: ${item.qty} (Rs. ${item.product.price} each)\n`;
@@ -735,13 +735,11 @@
 
             alert("Thank you for your order! Your purchase request is compiled. Click OK to open WhatsApp and send your payment screenshot validation directly to the studio.");
             
-            // Clear checkout form environment memory elements post validation run execution loops
             runningCartState = [];
             document.getElementById('checkout-execution-form').reset();
             redrawCartInterface();
             recalculateCartTotals();
 
-            // Redirect user to native chat interface connection
             window.open(integratedWhatsAppAnchorRoute, '_blank');
         }
     </script>
