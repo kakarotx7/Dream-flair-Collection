@@ -3,201 +3,747 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dream Flair Collection | Premium Nepali Ethnic Boutique</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-</head>
-<body class="bg-amber-50/20 font-sans text-gray-900">
+    <title>Dream Flair Collection | Dharan</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        /* Bright Elegant Boutique Color Palette */
+        :root {
+            --bg-main: #fbf9f6;
+            --bg-card: #ffffff;
+            --primary: #d4af37; /* Warm Gold tint */
+            --primary-accent: #e0115f; /* Deep Elegant Ruby Rose */
+            --text-dark: #231f20;
+            --text-muted: #6b6363;
+            --border: #ebdcd0;
+            --radius-lg: 16px;
+            --radius-sm: 8px;
+            --shadow: 0 12px 40px rgba(224, 17, 95, 0.04);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
 
-    <div class="bg-rose-700 text-white text-xs py-2 px-4 shadow-inner">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
-            <div class="flex items-center gap-4">
-                <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-300"></i> Gautam Path, Dharan, Nepal</span>
-                <span class="flex items-center gap-1"><i data-lucide="phone" class="w-3.5 h-3.5 text-amber-300"></i> +977-9807059071</span>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Playfair Display', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Top Bar Branding Navigation */
+        header {
+            background: var(--bg-card);
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .brand-title {
+            font-size: 2.8rem;
+            color: var(--primary-accent);
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 0.25rem;
+        }
+
+        .brand-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        /* Hidden Secure Floating Admin Lock Button */
+        .admin-lock-anchor {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0.4;
+            transition: var(--transition);
+        }
+        .admin-lock-anchor:hover { opacity: 1; transform: scale(1.1); }
+
+        /* Creator Panel Ribbon UI */
+        .creator-ribbon {
+            display: none;
+            background: #f0fdf4;
+            border-bottom: 3px solid #22c55e;
+            padding: 1.25rem;
+            text-align: center;
+            font-family: sans-serif;
+        }
+        body.admin-authenticated .creator-ribbon { display: block; }
+
+        .creator-grid-tools {
+            max-width: 1200px;
+            margin: 1rem auto 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+
+        /* Standard Content Container Layout */
+        .app-frame {
+            max-width: 1280px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+
+        @media (min-width: 992px) {
+            .app-frame { grid-template-columns: 2fr 1fr; }
+        }
+
+        .catalog-headline {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid var(--primary-accent);
+            padding-left: 0.75rem;
+        }
+
+        /* Store Inventory Product Grid System */
+        .store-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 2rem;
+        }
+
+        .boutique-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .boutique-card:hover { transform: translateY(-6px); border-color: var(--primary); }
+
+        .card-visual-wrapper {
+            width: 100%;
+            height: 300px;
+            background: #f3ece6;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-img { width: 100%; height: 100%; object-fit: cover; }
+
+        .card-details { padding: 1.25rem; flex-grow: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+        .card-cat { font-size: 0.75rem; font-weight: bold; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+        .card-title { font-size: 1.2rem; color: var(--text-dark); }
+        .card-price { font-size: 1.3rem; font-weight: bold; color: var(--primary-accent); }
+
+        /* Size Matrix Badges */
+        .card-sizes-row { display: flex; gap: 0.35rem; margin: 0.25rem 0; }
+        .size-pill { font-size: 0.75rem; padding: 0.2rem 0.5rem; border: 1px solid var(--border); border-radius: 4px; font-weight: bold; }
+
+        /* Context Interactive Buttons */
+        .action-cta {
+            width: 100%;
+            background: var(--text-dark);
+            color: #fff;
+            border: none;
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: auto;
+        }
+        .action-cta:hover { background: var(--primary-accent); }
+
+        /* Dynamic Input Controls inside Admin Mode */
+        .admin-inline-editor {
+            display: none;
+            background: #fff;
+            border-top: 2px dashed #22c55e;
+            padding: 1rem;
+            font-family: sans-serif;
+            font-size: 0.85rem;
+        }
+        body.admin-authenticated .admin-inline-editor { display: block; }
+
+        .editor-input {
+            width: 100%;
+            padding: 0.4rem;
+            margin: 0.25rem 0 0.75rem 0;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        .btn-destructive { background: #ef4444; color: white; border: none; padding: 0.4rem; border-radius: 4px; width: 100%; cursor: pointer; margin-top: 0.25rem; }
+
+        /* Interactive Checkout Cart Terminal */
+        .sticky-checkout-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .cart-title-row { font-size: 1.4rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--bg-main); }
+        
+        .cart-scroll-node { max-height: 240px; overflow-y: auto; margin-bottom: 1.5rem; }
+        .cart-line-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--bg-main); font-size: 0.95rem; }
+
+        /* Form Layout Styles */
+        .input-block { margin-bottom: 1.25rem; }
+        .input-block label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 0.4rem; color: var(--text-dark); }
+        .ui-field { width: 100%; padding: 0.75rem; border: 1px solid var(--border); background: var(--bg-main); border-radius: var(--radius-sm); outline: none; font-size: 0.95rem; }
+        .ui-field:focus { border-color: var(--primary-accent); background: #fff; }
+
+        .radio-delivery-box {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .delivery-label-card {
+            flex: 1;
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-weight: bold;
+            transition: var(--transition);
+            background: white;
+        }
+        .delivery-label-card input { margin-bottom: 0.25rem; }
+        .delivery-label-card.active-choice {
+            border-color: var(--primary-accent);
+            background: rgba(224, 17, 95, 0.02);
+            color: var(--primary-accent);
+        }
+
+        /* Embedded Pre-Payment Portal UI */
+        .qr-display-box {
+            background: #fffbf0;
+            border: 1px dashed var(--primary);
+            padding: 1.25rem;
+            border-radius: var(--radius-sm);
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+        .qr-img-wrapper {
+            width: 160px;
+            height: 160px;
+            background: #f3ece6;
+            margin: 0.5rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .btn-order-execution {
+            width: 100%;
+            background: var(--primary-accent);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(224, 17, 95, 0.2);
+            transition: var(--transition);
+        }
+        .btn-order-execution:hover { background: #c20e50; transform: translateY(-1px); }
+
+        /* Store Footer Baseline */
+        footer {
+            background: #1a1717;
+            color: white;
+            padding: 3rem 1.5rem;
+            text-align: center;
+            margin-top: 6rem;
+            border-top: 3px solid var(--primary);
+        }
+        footer p { margin: 0.5rem 0; color: #b5aeb0; }
+        .footer-call { color: #fff; font-weight: bold; font-size: 1.2rem; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <button class="admin-lock-anchor" onclick="challengeOwnerCredentials()">⚙️</button>
+
+    <div class="creator-ribbon" id="adminPanel">
+        <h3 style="color:#166534; font-size:1.2rem;">🛠️ Dream Flair Admin Terminal Enabled</h3>
+        <p style="font-size:0.85rem; color:#1e40af; margin-top:0.25rem;">You can now add any variation count sequentially, edit prices, or adjust the live payment QR configuration downstream.</p>
+        
+        <div class="creator-grid-tools">
+            <div style="background:white; padding:0.75rem; border-radius:6px; border:1px solid #bbf7d0; text-align:left;">
+                <strong style="font-size:0.8rem; display:block; margin-bottom:0.25rem;">Bulk Append Variation Asset</strong>
+                <input type="text" id="new-item-name" placeholder="Item Title (e.g., Pure Chiffon Saree)" class="editor-input" style="margin-bottom:0.4rem;">
+                <select id="new-item-cat" class="editor-input" style="margin-bottom:0.4rem; width:100%; padding:0.4rem;">
+                    <option value="Kurthi">Kurthi</option>
+                    <option value="Saree">Saree</option>
+                    <option value="Earrings (Jhumka)">Earrings (Jhumka)</option>
+                    <option value="Handbags">Handbags</option>
+                </select>
+                <input type="number" id="new-item-price" placeholder="Price (NPR)" class="editor-input" style="margin-bottom:0.4rem;">
+                <input type="text" id="new-item-img" placeholder="Unsplash / Direct Image Link" class="editor-input" value="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500" style="margin-bottom:0.4rem;">
+                <button onclick="injectNewVariety()" style="background:#22c55e; color:white; border:none; padding:0.4rem; font-weight:bold; width:100%; border-radius:4px; cursor:pointer;">Push to Inventory Catalog</button>
             </div>
-            <div class="font-medium tracking-wide text-amber-200">✨ Custom Saree Design Available! Call Us to Customize ✨</div>
+
+            <div style="background:white; padding:0.75rem; border-radius:6px; border:1px solid #bbf7d0; text-align:left;">
+                <strong style="font-size:0.8rem; display:block; margin-bottom:0.25rem;">Modify Store Payment QR Image</strong>
+                <input type="text" id="qr-url-modifier" class="editor-input" placeholder="Paste image file link url here">
+                <button onclick="updateStoreQR()" style="background:#0284c7; color:white; border:none; padding:0.4rem; font-weight:bold; width:100%; border-radius:4px; cursor:pointer;">Update QR Manifest</button>
+            </div>
         </div>
+        <button onclick="logoutAdmin()" style="margin-top:1rem; background:#64748b; color:white; padding:0.25rem 0.75rem; border:none; border-radius:4px; cursor:pointer;">Exit Admin Mode</button>
     </div>
 
-    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-rose-100 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <i data-lucide="flower-2" class="w-6 h-6 text-rose-600"></i>
-                <span class="text-xl font-bold tracking-tight bg-gradient-to-r inline-block text-transparent bg-clip-text from-rose-600 to-amber-600">Dream Flair Collection</span>
-            </div>
-            
-            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-                <a href="#shop" class="hover:text-rose-600 transition">Kurthis</a>
-                <a href="#shop" class="hover:text-rose-600 transition">Sarees</a>
-                <a href="#custom-saree" class="hover:text-rose-600 transition">Custom Orders</a>
-                <a href="#shop" class="hover:text-rose-600 transition">Handbags & Jhumkas</a>
-            </nav>
-
-            <div class="flex items-center gap-4">
-                <button class="p-2 text-gray-600 hover:text-rose-600 relative">
-                    <i data-lucide="shopping-bag" class="w-6 h-6"></i>
-                    <span id="cart-count" class="absolute -top-1 -right-1 bg-rose-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
-                </button>
-            </div>
-        </div>
+    <header>
+        <h1 class="brand-title">Dream Flair Collection</h1>
+        <div class="brand-subtitle">Gautam Path, Dharan</div>
     </header>
 
-    <main>
-        <section class="relative bg-gradient-to-br from-rose-50 via-white to-amber-50 py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-            <div class="max-w-7xl mx-auto relative z-10 text-center max-w-2xl">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-rose-700 bg-rose-50 border border-rose-200 rounded-full mb-6">
-                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Premium Dharan Boutique
-                </span>
-                <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-gray-900 mb-6">
-                    Your Complete Look from <span class="bg-gradient-to-r inline-block text-transparent bg-clip-text from-rose-600 to-amber-600">Dream Flair Collection</span>
-                </h1>
-                <p class="text-lg text-gray-600 mb-8">
-                    Explore high-quality Kurthis, elegant Sarees, handcrafted bags, and stunning Jhumkas. Visit us at Gautam Path, Dharan, or call us directly to place orders.
-                </p>
-                <div class="flex justify-center gap-4">
-                    <a href="#shop" class="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-6 py-3 rounded-xl transition shadow-lg shadow-rose-600/20 flex items-center gap-2">
-                        Browse Catalog <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </a>
-                    <a href="tel:+9779807059071" class="bg-white hover:bg-gray-50 text-rose-600 font-semibold px-6 py-3 border border-rose-200 rounded-xl transition shadow-sm flex items-center gap-2">
-                        <i data-lucide="phone-call" class="w-4 h-4"></i> Call to Order
-                    </a>
+    <div class="app-frame">
+        
+        <div>
+            <h2 class="catalog-headline">Our Boutique Collection</h2>
+            <div class="store-grid" id="catalog-target-grid">
                 </div>
-            </div>
-        </section>
+        </div>
 
-        <section id="custom-saree" class="bg-gradient-to-r from-rose-900 to-amber-900 text-white py-14 px-4 sm:px-6 lg:px-8 shadow-md">
-            <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-                <div class="max-w-xl">
-                    <div class="flex items-center gap-2 text-amber-400 text-sm font-bold tracking-widest uppercase mb-2">
-                        <i data-lucide="scissors" class="w-4 h-4"></i> Tailor-Made For You
+        <div class="sticky-checkout-panel">
+            <h3 class="cart-title-row">🛒 Your Selected Cart Items</h3>
+            
+            <div class="cart-scroll-node" id="cart-items-container">
+                <p style="color: var(--text-muted); font-size:0.9rem; text-align:center; padding:1rem 0;">Your cart is empty. Click an item below to load selections.</p>
+            </div>
+
+            <form id="checkout-execution-form" onsubmit="handleOrderSubmission(event)">
+                <div class="input-block">
+                    <label>Full Name</label>
+                    <input type="text" class="ui-field" id="cust-name" required placeholder="Your Name">
+                </div>
+
+                <div class="input-block">
+                    <label>Contact Mobile Number</label>
+                    <input type="tel" class="ui-field" id="cust-phone" required placeholder="98XXXXXXXX">
+                </div>
+
+                <div class="input-block">
+                    <label>Detailed Shipping Address (All Over Nepal)</label>
+                    <input type="text" class="ui-field" id="cust-address" required placeholder="District, City, Tole Name">
+                </div>
+
+                <div class="input-block">
+                    <label>Preferred Delivery Strategy</label>
+                    <div class="radio-delivery-box">
+                        <div class="delivery-label-card active-choice" id="card-office" onclick="switchDeliveryStrategy('office', 180)">
+                            <input type="radio" name="delivery_type" value="Office Delivery" checked style="pointer-events:none;">
+                            <span>Office Delivery</span>
+                            <span style="font-size:0.8rem; color:var(--text-muted); font-weight:normal;">Rs. 180</span>
+                        </div>
+                        <div class="delivery-label-card" id="card-home" onclick="switchDeliveryStrategy('home', 220)">
+                            <input type="radio" name="delivery_type" value="Home Delivery" style="pointer-events:none;">
+                            <span>Home Delivery</span>
+                            <span style="font-size:0.8rem; color:var(--text-muted); font-weight:normal;">Rs. 220</span>
+                        </div>
                     </div>
-                    <h2 class="text-3xl font-bold tracking-tight mb-4">Personalized Customized Sarees</h2>
-                    <p class="text-rose-100/90 leading-relaxed">
-                        Have a dream look in mind for a wedding, festival, or family event? We design and customize personalized sarees tailored exactly to your preferences, color selections, and embroidery design ideas. 
-                    </p>
                 </div>
-                <div class="shrink-0">
-                    <a href="tel:+9779807059071" class="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-500 text-gray-900 font-bold px-6 py-3.5 rounded-xl transition shadow-xl">
-                        <i data-lucide="phone-call" class="w-4 h-4"></i> Discuss Your Design
-                    </a>
-                </div>
-            </div>
-        </section>
 
-        <section id="shop" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div class="flex justify-between items-end mb-10">
-                <div>
-                    <h2 class="text-2xl font-bold tracking-tight text-gray-900">Featured Collections</h2>
-                    <p class="text-sm text-gray-500 mt-1">Our newest arrivals in Kurthis, Sarees, and Premium Accessories.</p>
+                <div class="qr-display-box">
+                    <strong style="font-size:0.9rem; display:block; color:var(--primary-accent);">✨ Fonepay / Bank Pre-Payment System</strong>
+                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.2rem;">Scan the merchant QR below to finalize transaction validation:</p>
+                    <div class="qr-img-wrapper">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=DreamFlairCollectionDharan" id="merchant-qr-element" style="width:100%; height:100%; object-fit:contain;" alt="Merchant Bank QR Code">
+                    </div>
+                    <span style="font-size:0.7rem; color:#b45309; background:#fef3c7; padding:0.2rem 0.5rem; border-radius:4px; font-weight:bold; display:inline-block; margin-top:0.25rem;">Scan & Pay to Confirm Placement</span>
                 </div>
-            </div>
 
-            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div style="margin: 1.5rem 0; border-top:1px dashed var(--border); padding-top:1rem; display:flex; flex-direction:column; gap:0.4rem;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.9rem; color:var(--text-muted);">
+                        <span>Items Subtotal:</span>
+                        <span>Rs. <span id="metric-subtotal">0</span></span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.9rem; color:var(--text-muted);">
+                        <span>Delivery Logistics Fee:</span>
+                        <span>Rs. <span id="metric-shipping">180</span></span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:1.3rem; font-weight:bold; color:var(--primary-accent); margin-top:0.2rem;">
+                        <span>Total Due:</span>
+                        <span>Rs. <span id="metric-grandtotal">0</span></span>
+                    </div>
                 </div>
-        </section>
-    </main>
 
-    <footer class="bg-gray-900 text-gray-400 border-t border-gray-800 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 border-b border-gray-800 pb-8">
-            <div>
-                <h3 class="text-white font-bold text-lg mb-3 flex items-center gap-2">
-                    <i data-lucide="flower-2" class="w-5 h-5 text-rose-500"></i> Dream Flair Collection
-                </h3>
-                <p class="text-sm leading-relaxed text-gray-400">Your boutique choice in Dharan for exquisite traditional wear, custom tailoring designs, and authentic matching accessories.</p>
-            </div>
-            <div>
-                <h4 class="text-white font-semibold text-sm tracking-wider uppercase mb-3">Our Location</h4>
-                <p class="text-sm flex items-start gap-2">
-                    <i data-lucide="map-pin" class="w-4 h-4 text-rose-500 mt-0.5 shrink-0"></i>
-                    <span>Gautam Path, Dharan<br>Koshi Province, Nepal</span>
-                </p>
-            </div>
-            <div>
-                <h4 class="text-white font-semibold text-sm tracking-wider uppercase mb-3">Order Helpline</h4>
-                <p class="text-sm flex items-center gap-2 mb-2">
-                    <i data-lucide="phone" class="w-4 h-4 text-rose-500"></i>
-                    <a href="tel:+9779807059071" class="hover:text-white transition">+977-9807059071</a>
-                </p>
-                <p class="text-xs text-gray-500">Call or Message us to arrange pickup or customization details.</p>
-            </div>
+                <button type="submit" class="btn-order-execution">Lock Order & Send Email Alerts</button>
+            </form>
         </div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-gray-600">
-            <p>&copy; 2026 Dream Flair Collection, Dharan. Designed with elegance.</p>
-        </div>
+
+    </div>
+
+    <footer>
+        <p>📍 Location: Gautam Path, Dharan, Nepal</p>
+        <p>Dream Flair Collection Studio — Luxury Attire Transformed</p>
+        <a href="tel:+9779815339830" class="footer-call">📞 +977-9815339830</a>
     </footer>
 
     <script>
-        // ==========================================
-        // PRODUCTS DATA
-        // ==========================================
-        const products = [
-            { 
-                id: 1, 
-                name: "Premium Silk Kurthi Set with Dupatta", 
-                price: "Rs. 2,850", 
-                category: "Kurthi", 
-                img: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500&auto=format&fit=crop&q=80" 
-            },
-            { 
-                id: 2, 
-                name: "Pure Georgette Designer Banarasi Saree", 
-                price: "Rs. 6,500", 
-                category: "Saree", 
-                img: "https://images.unsplash.com/photo-1610030470298-405235347223?w=500&auto=format&fit=crop&q=80" 
-            },
-            { 
-                id: 3, 
-                name: "Handcrafted Traditional Jhumka Earrings", 
-                price: "Rs. 450", 
-                category: "Earrings", 
-                img: "https://images.unsplash.com/photo-1630019852942-f89202989a59?w=500&auto=format&fit=crop&q=80" 
-            },
-            { 
-                id: 4, 
-                name: "Premium Wedding Embroidered Handbag", 
-                price: "Rs. 1,800", 
-                category: "Handbags", 
-                img: "https://images.unsplash.com/photo-1566150905458-1bf1fc15a490?w=500&auto=format&fit=crop&q=80" 
-            }
+        // CRITICAL EMAILJS CREDENTIAL KEYS ASSIGNMENT HOOKS
+        // --- INSTALLED LIVE FROM OWNER ACCOUNTS TERMINAL DATA MANIFESTS ---
+        const EMAILJS_PUBLIC_KEY = "i6cvg7k3f9KKBjDwW"; 
+        const EMAILJS_SERVICE_ID = "service_ktes3uf";
+        const EMAILJS_TEMPLATE_ID = "template_65abuf8";
+
+        // Hardcoded initialization collection sequence dataset array 
+        const foundationalCatalog = [
+            { id: "df_1", name: "Premium Georgette Kurthi", category: "Kurthi", price: "2850", image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500" },
+            { id: "df_2", name: "Kanchipuram Silk Saree", category: "Saree", price: "9200", image: "https://images.unsplash.com/photo-1610030469668-93535c17b6b3?w=500" },
+            { id: "df_3", name: "Classic Bridal Jhumka Set", category: "Earrings (Jhumka)", price: "1850", image: "https://images.unsplash.com/photo-1635767798638-3e25273a8236?w=500" },
+            { id: "df_4", name: "Designer Chic Embroidered Clutch", category: "Handbags", price: "3400", image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500" }
         ];
 
-        // Dynamic Loading Logic
-        let cartCount = 0;
-        const cartBadge = document.getElementById('cart-count');
-        const productGrid = document.getElementById('product-grid');
+        // App Reactive Memory States Engine Tracker
+        let activeInventoryStore = [];
+        let runningCartState = [];
+        let configuredDeliveryFee = 180;
+        let selectedDeliveryStrategy = "Office Delivery";
 
-        function addToCart() {
-            cartCount++;
-            cartBadge.textContent = cartCount;
-            if (cartCount > 0) {
-                cartBadge.classList.remove('hidden');
+        // Bootstrap loader event hook
+        window.addEventListener('DOMContentLoaded', () => {
+            // Setup local state persistence buffers
+            const preservedCatalog = localStorage.getItem('df_collection_catalog_manifest');
+            if (preservedCatalog) {
+                activeInventoryStore = JSON.parse(preservedCatalog);
+            } else {
+                activeInventoryStore = foundationalCatalog;
+                localStorage.setItem('df_collection_catalog_manifest', JSON.stringify(foundationalCatalog));
+            }
+
+            // Sync structural QR setups across boots
+            const preservedQRUrl = localStorage.getItem('df_boutique_merchant_qr_string');
+            if (preservedQRUrl) {
+                document.getElementById('merchant-qr-element').src = preservedQRUrl;
+                document.getElementById('qr-url-modifier').value = preservedQRUrl;
+            }
+
+            // Initialize API framework execution layer engine parameters
+            if(typeof emailjs !== 'undefined') {
+                emailjs.init(EMAILJS_PUBLIC_KEY);
+            }
+
+            renderStorefrontCatalog();
+            recalculateCartTotals();
+        });
+
+        // Prompt Secure Pin Validation Logic Trigger
+        function challengeOwnerCredentials() {
+            const enteredToken = prompt("🔑 Access Warning: Enter Owner 4-Digit Security PIN to activate editing functions:");
+            if (enteredToken === "0610") {
+                document.body.classList.add('admin-authenticated');
+                alert("Identity verified. Creator administration controls are now visible inline.");
+            } else if (enteredToken !== null) {
+                alert("Access Denied. Invalid Secure PIN Sequence.");
             }
         }
 
-        products.forEach(product => {
-            const productCard = document.createElement('div');
-            productCard.className = 'group relative flex flex-col bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300';
-            
-            productCard.innerHTML = `
-                <div class="aspect-[3/4] bg-gray-100 overflow-hidden relative">
-                    <img src="${product.img}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    <span class="absolute top-3 left-3 bg-rose-600 text-white text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full shadow-sm">${product.category}</span>
-                </div>
-                <div class="p-5 flex flex-col flex-1 justify-between">
-                    <div>
-                        <h3 class="font-semibold text-gray-900 group-hover:text-rose-600 transition line-clamp-2">${product.name}</h3>
-                        <p class="text-xl font-bold text-rose-600 mt-2">${product.price}</p>
-                    </div>
-                    <button onclick="addToCart()" class="mt-4 w-full bg-gray-900 hover:bg-rose-600 text-white font-medium text-sm py-2.5 px-4 rounded-xl transition flex items-center justify-center gap-2 group/btn">
-                        <i data-lucide="shopping-cart" class="w-4 h-4 text-gray-400 group-hover/btn:text-white transition"></i> Add to Bag
-                    </button>
-                </div>
-            `;
-            productGrid.appendChild(productCard);
-        });
+        function logoutAdmin() {
+            document.body.classList.remove('admin-authenticated');
+            alert("Admin mode disabled.");
+        }
 
-        // Initialize Icons
-        lucide.createIcons();
+        // Catalog UI Array Layout Redraw Engine
+        function renderStorefrontCatalog() {
+            const container = document.getElementById('catalog-target-grid');
+            container.innerHTML = '';
+
+            activeInventoryStore.forEach(product => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'boutique-card';
+                cardElement.innerHTML = `
+                    <div class="card-visual-wrapper">
+                        <img src="${product.image}" class="card-img" alt="${product.name}">
+                    </div>
+                    <div class="card-details">
+                        <span class="card-cat">${product.category}</span>
+                        <h3 class="card-title" id="lbl-title-${product.id}">${product.name}</h3>
+                        <div class="card-price">Rs. <span id="lbl-price-${product.id}">${product.price}</span></div>
+                        
+                        <div class="card-sizes-row">
+                            <span class="size-pill">M</span><span class="size-pill">L</span>
+                            <span class="size-pill">XL</span><span class="size-pill">XXL</span>
+                        </div>
+
+                        <div style="margin-bottom:0.5rem; display:flex; align-items:center; gap:0.4rem;">
+                            <span style="font-size:0.75rem; font-weight:bold; color:var(--text-muted);">Size:</span>
+                            <select id="size-selector-${product.id}" style="padding:0.2rem; font-size:0.8rem; border-radius:4px; border:1px solid var(--border);">
+                                <option value="M">M</option><option value="L">L</option>
+                                <option value="XL">XL</option><option value="XXL">XXL</option>
+                            </select>
+                        </div>
+
+                        <button class="action-cta" onclick="appendItemToCart('${product.id}')">Add To Bag</button>
+                    </div>
+
+                    <div class="admin-inline-editor">
+                        <label>Modify Label</label>
+                        <input type="text" class="editor-input" id="edit-title-${product.id}" value="${product.name}">
+                        
+                        <label>Modify Price (Rs.)</label>
+                        <input type="number" class="editor-input" id="edit-price-${product.id}" value="${product.price}">
+                        
+                        <label>Modify Image URL Source</label>
+                        <input type="text" class="editor-input" id="edit-image-${product.id}" value="${product.image}">
+                        
+                        <div style="display:flex; gap:0.5rem;">
+                            <button onclick="commitProductEdits('${product.id}')" style="background:#22c55e; color:white; font-weight:bold; border:none; padding:0.4rem; border-radius:4px; cursor:pointer; flex:2;">Save Changes</button>
+                            <button onclick="purgeCatalogItem('${product.id}')" class="btn-destructive" style="flex:1; margin:0; padding:0.4rem;">Delete</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(cardElement);
+            });
+        }
+
+        // Creator Core Mechanics: Add Unlimited Varieties Inline simultaneously
+        function injectNewVariety() {
+            const name = document.getElementById('new-item-name').value.trim();
+            const category = document.getElementById('new-item-cat').value;
+            const price = document.getElementById('new-item-price').value.trim();
+            const image = document.getElementById('new-item-img').value.trim();
+
+            if (!name || !price) {
+                alert("Execution Aborted: Variant title and baseline pricing metrics are required.");
+                return;
+            }
+
+            const constructedPayload = {
+                id: "df_" + Date.now(), // Generate dynamic safe structural uniqueness key identifier
+                name: name,
+                category: category,
+                price: price,
+                image: image || "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=500"
+            };
+
+            activeInventoryStore.push(constructedPayload);
+            localStorage.setItem('df_collection_catalog_manifest', JSON.stringify(activeInventoryStore));
+            
+            renderStorefrontCatalog();
+            
+            // Clean interface inputs for immediate subsequent additions
+            document.getElementById('new-item-name').value = '';
+            document.getElementById('new-item-price').value = '';
+            alert(`"${name}" pushed successfully into live tracking matrix memory!`);
+        }
+
+        // Inline Single Item Value Modification Saves
+        function commitProductEdits(productId) {
+            const updatedTitle = document.getElementById(`edit-title-${productId}`).value;
+            const updatedPrice = document.getElementById(`edit-price-${productId}`).value;
+            const updatedImg = document.getElementById(`edit-image-${productId}`).value;
+
+            const indexPointer = activeInventoryStore.findIndex(item => item.id === productId);
+            if (indexPointer !== -1) {
+                activeInventoryStore[indexPointer].name = updatedTitle;
+                activeInventoryStore[indexPointer].price = updatedPrice;
+                activeInventoryStore[indexPointer].image = updatedImg;
+
+                localStorage.setItem('df_collection_catalog_manifest', JSON.stringify(activeInventoryStore));
+                
+                // Live hot refresh view states updates across layout grids instantly
+                document.getElementById(`lbl-title-${productId}`).innerText = updatedTitle;
+                document.getElementById(`lbl-price-${productId}`).innerText = updatedPrice;
+                alert("Product UI parameters refactored successfully.");
+            }
+        }
+
+        // Inventory Purging Module Node
+        function purgeCatalogItem(productId) {
+            if(confirm("Confirm action: Do you wish to completely remove this listing asset variation?")) {
+                activeInventoryStore = activeInventoryStore.filter(item => item.id !== productId);
+                localStorage.setItem('df_collection_catalog_manifest', JSON.stringify(activeInventoryStore));
+                renderStorefrontCatalog();
+            }
+        }
+
+        // Dynamic Merchant QR Adjustment Engine Hook
+        function updateStoreQR() {
+            const pathLink = document.getElementById('qr-url-modifier').value.trim();
+            if(pathLink) {
+                document.getElementById('merchant-qr-element').src = pathLink;
+                localStorage.setItem('df_boutique_merchant_qr_string', pathLink);
+                alert("Global bank processing QR asset altered across checkout screens.");
+            }
+        }
+
+        // Interactive Shopping Cart System Core Actions
+        function appendItemToCart(productId) {
+            const coreItemData = activeInventoryStore.find(p => p.id === productId);
+            const sizeOptionElement = document.getElementById(`size-selector-${productId}`);
+            const determinedSize = sizeOptionElement ? sizeOptionElement.value : "M";
+
+            // Uniqueness is defined by both product ID and target size choice
+            const matchingIndex = runningCartState.findIndex(item => item.product.id === productId && item.size === determinedSize);
+
+            if (matchingIndex !== -1) {
+                runningCartState[matchingIndex].qty += 1;
+            } else {
+                runningCartState.push({ product: coreItemData, size: determinedSize, qty: 1 });
+            }
+
+            redrawCartInterface();
+            recalculateCartTotals();
+        }
+
+        function sliceCartItemQty(index) {
+            runningCartState[index].qty -= 1;
+            if (runningCartState[index].qty <= 0) {
+                runningCartState.splice(index, 1);
+            }
+            redrawCartInterface();
+            recalculateCartTotals();
+        }
+
+        // Redraw Shopping Cart Line Items DOM
+        function redrawCartInterface() {
+            const container = document.getElementById('cart-items-container');
+            if (runningCartState.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted); font-size:0.9rem; text-align:center; padding:1rem 0;">Your cart is empty. Click an item to add selections.</p>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            runningCartState.forEach((item, idx) => {
+                const row = document.createElement('div');
+                row.className = 'cart-line-item';
+                row.innerHTML = `
+                    <div style="max-width:70%;">
+                        <strong style="display:block; font-size:0.95rem;">${item.product.name}</strong>
+                        <span style="font-size:0.75rem; color:var(--primary-accent); background:#ffeef2; padding:0.1rem 0.4rem; border-radius:4px; font-weight:bold; display:inline-block; margin-top:0.15rem;">Size: ${item.size}</span>
+                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.1rem;">Rs. ${item.product.price} × ${item.qty}</div>
+                    </div>
+                    <div style="text-align:right; display:flex; align-items:center; gap:0.5rem;">
+                        <span style="font-weight:bold;">Rs. ${item.product.price * item.qty}</span>
+                        <button type="button" onclick="sliceCartItemQty(${idx})" style="background:none; border:none; color:var(--primary-accent); cursor:pointer; font-weight:bold; font-size:1.1rem; padding:0 0.25rem;">✕</button>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        // Live Financial Calculation Functions
+        function switchDeliveryStrategy(strategyKey, rateFee) {
+            configuredDeliveryFee = rateFee;
+            selectedDeliveryStrategy = strategyKey === "office" ? "Office Delivery" : "Home Delivery";
+
+            document.querySelectorAll('.delivery-label-card').forEach(el => el.classList.remove('active-choice'));
+            document.querySelectorAll('input[name="delivery_type"]').forEach(input => input.checked = false);
+
+            if(strategyKey === 'office') {
+                document.getElementById('card-office').classList.add('active-choice');
+                document.getElementById('card-office').querySelector('input').checked = true;
+            } else {
+                document.getElementById('card-home').classList.add('active-choice');
+                document.getElementById('card-home').querySelector('input').checked = true;
+            }
+
+            document.getElementById('metric-shipping').innerText = rateFee;
+            recalculateCartTotals();
+        }
+
+        function recalculateCartTotals() {
+            let itemsAccumulatedSum = 0;
+            runningCartState.forEach(item => {
+                itemsAccumulatedSum += (parseInt(item.product.price) * item.qty);
+            });
+
+            const absoluteCalculatedGrandTotal = itemsAccumulatedSum > 0 ? (itemsAccumulatedSum + configuredDeliveryFee) : 0;
+
+            document.getElementById('metric-subtotal').innerText = itemsAccumulatedSum.toLocaleString();
+            document.getElementById('metric-grandtotal').innerText = absoluteCalculatedGrandTotal.toLocaleString();
+        }
+
+        // Serverless Automated Transmit Data Routing Logic
+        function handleOrderSubmission(event) {
+            event.preventDefault();
+
+            if(runningCartState.length === 0) {
+                alert("Your shopping cart is currently empty! Add items before checking out.");
+                return;
+            }
+
+            const targetClientName = document.getElementById('cust-name').value.trim();
+            const targetClientPhone = document.getElementById('cust-phone').value.trim();
+            const targetClientAddress = document.getElementById('cust-address').value.trim();
+            const finalAmountDue = document.getElementById('metric-grandtotal').innerText;
+
+            // Compile structured text string outlining exact selected purchase options
+            let ordersBreakdownString = "";
+            runningCartState.forEach((item, index) => {
+                ordersBreakdownString += `${index + 1}. Item: ${item.product.name} [Size: ${item.size}] | Quantity: ${item.qty} (Rs. ${item.product.price} each)\n`;
+            });
+
+            // 1. DISPATCH AUTOMATED EMAIL BACKEND ALERTS VIA EMAILJS ENGINE
+            const emailDataParameters = {
+                order_details: ordersBreakdownString,
+                customer_name: targetClientName,
+                customer_phone: targetClientPhone,
+                delivery_type: selectedDeliveryStrategy,
+                delivery_address: targetClientAddress,
+                total_price: finalAmountDue
+            };
+
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailDataParameters)
+                .then(() => {
+                    console.log("Order logged successfully inside merchant dashboard records.");
+                }, (error) => {
+                    console.error("Transmission error encountered during email processing:", error);
+                });
+
+            // 2. DISPATCH LIVE WHATSAPP FALLBACK BACKEND LINK
+            const customerMessageTemplate = encodeURIComponent(
+                `🛍️ *DREAM FLAIR COLLECTION - ORDER MANIFEST*\n\n` +
+                `👤 *Customer Name:* ${targetClientName}\n` +
+                `📱 *Contact Phone:* ${targetClientPhone}\n` +
+                `🚚 *Delivery Context:* ${selectedDeliveryStrategy} (Fee Applied)\n` +
+                `🏠 *Destination Address:* ${targetClientAddress}\n\n` +
+                `📋 *Items Requested Lines Summary:*\n${ordersBreakdownString}\n` +
+                `💰 *TOTAL AGGREGATE LEDGER DUE:* Rs. ${finalAmountDue}\n\n` +
+                `💳 _Note: Pre-Payment screenshot validation attached in chat screen sequence instructions below._`
+            );
+
+            const directLineTargetNumber = "9779815339830";
+            const integratedWhatsAppAnchorRoute = `https://wa.me/${directLineTargetNumber}?text=${customerMessageTemplate}`;
+
+            alert("Thank you for your order! Your purchase request is compiled. Click OK to open WhatsApp and send your payment screenshot validation directly to the studio.");
+            
+            // Clear checkout form environment memory elements post validation run execution loops
+            runningCartState = [];
+            document.getElementById('checkout-execution-form').reset();
+            redrawCartInterface();
+            recalculateCartTotals();
+
+            // Redirect user to native chat interface connection
+            window.open(integratedWhatsAppAnchorRoute, '_blank');
+        }
     </script>
 </body>
 </html>
