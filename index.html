@@ -80,7 +80,7 @@
             color: white;
         }
 
-        /* Luxury Header Configuration with Psychological Branding Integration */
+        /* Luxury Header Configuration */
         header {
             background: var(--bg-card);
             padding: 1.5rem 1.25rem;
@@ -193,7 +193,7 @@
             color: #ffffff;
         }
 
-        /* Split-Pane Layout */
+        /* Marketplace and Product Grids */
         .marketplace-container {
             max-width: 1340px;
             margin: 1.5rem auto;
@@ -209,7 +209,6 @@
             }
         }
 
-        /* Product Shelf Design Grid matching customer requests */
         .catalog-display-shelf {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -316,7 +315,7 @@
         }
         body.admin-authenticated .inline-management-drawer { display: block; }
 
-        /* Elegant Detail Drawer Modal Overlay (Popup System) */
+        /* Modal Overlay */
         .modal-overlay-backdrop {
             display: none;
             position: fixed;
@@ -470,7 +469,7 @@
             align-items: center;
         }
 
-        /* Right Side Checkout Panel View Container */
+        /* Checkout Panel */
         .checkout-terminal-dock {
             background: var(--bg-card);
             border: 1px solid var(--border-light);
@@ -529,7 +528,7 @@
             background: #faf9f6;
         }
 
-        /* Anti-Scam Verification Module Enhanced with Trust Psychology */
+        /* Checkout QR Section */
         .bank-qr-checkout-wrapper {
             background: #fff8f8;
             border: 1px solid #ffc9c9;
@@ -706,7 +705,7 @@
 
     <header>
         <div class="header-brand-wrap">
-            <img src="https://i.ibb.co/LdQfptC/dream-flair-logo.png" class="premium-brand-logo-circle" alt="Dream Flair Collection Circular Brand Identity Sign">
+            <img src="image.png" class="premium-brand-logo-circle" alt="Dream Flair Logo">
             <div class="brand-logo">Dream Flair Collection</div>
         </div>
         <div class="brand-location">Gautam Path, Dharan</div>
@@ -773,11 +772,11 @@
 
                 <div class="bank-qr-checkout-wrapper">
                     <div class="qr-seal-badge-container">
-                        <img src="https://i.ibb.co/LdQfptC/dream-flair-logo.png" class="qr-merchant-logo-stamp" alt="Verified Official Merchant Label Logo">
+                        <img src="image.png" class="qr-merchant-logo-stamp" alt="Logo">
                         <div style="font-size:0.8rem; font-weight:700; color:#b11b1b;">⚠️ STEP 1: SCAN AND PAY FIRST</div>
                     </div>
                     <div class="qr-graphic-shield">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=DreamFlairCollectionDharan" id="checkoutQRDOMElement" style="width:100%; height:100%; object-fit:contain;" alt="Bank Processing Merchant QR Code Profile">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=DreamFlairCollectionDharan" id="checkoutQRDOMElement" style="width:100%; height:100%; object-fit:contain;" alt="QR Code">
                     </div>
                     
                     <div style="font-size:0.8rem; font-weight:700; color:#b11b1b; margin-top:0.6rem;">⚠️ STEP 2: UPLOAD RECEIPT TO UNLOCK ORDER</div>
@@ -785,7 +784,7 @@
                         <div class="upload-label-text" id="uploadStatusLabel">📸 Select Receipt Screenshot</div>
                         <input type="file" id="screenshotFilePicker" accept="image/*" required onchange="verifyIncomingScreenshot(this)">
                     </div>
-                    <img id="previewThumbnail" class="screenshot-thumbnail-preview" alt="Receipt Thumbnail Image Data Display Node">
+                    <img id="previewThumbnail" class="screenshot-thumbnail-preview" alt="Receipt">
                 </div>
 
                 <div style="margin:1rem 0; font-size:0.85rem; display:flex; flex-direction:column; gap:0.4rem; background:#faf9f6; padding:0.75rem; border-radius:8px;">
@@ -813,7 +812,7 @@
             </div>
             <div class="modal-body-content">
                 <div class="modal-brand-badge-row">
-                    <img src="https://i.ibb.co/LdQfptC/dream-flair-logo.png" class="modal-mini-logo" alt="Micro Logo Profile Stamp">
+                    <img src="image.png" class="modal-mini-logo" alt="Logo">
                     <span id="modalProductCategory" style="font-size:0.7rem; font-weight:700; text-transform:uppercase; color:var(--primary); letter-spacing:0.5px;">Category</span>
                 </div>
                 <h3 id="modalProductName" style="font-size:1.1rem; font-weight:700; color:var(--accent); margin-bottom:0.25rem;">Product Name Placeholder</h3>
@@ -849,7 +848,7 @@
     </div>
 
     <footer>
-        <img src="https://i.ibb.co/LdQfptC/dream-flair-logo.png" class="footer-logo-stamp" alt="Dream Flair Footnote Watermark Brand Identity Stamp">
+        <img src="image.png" class="footer-logo-stamp" alt="Logo">
         <p>📍 Location: Gautam Path, Dharan, Nepal</p>
         <p style="margin-top:0.4rem; font-size:0.75rem;">© 2026 Dream Flair Collection. All Rights Reserved.</p>
     </footer>
@@ -972,7 +971,6 @@
             buildStorefrontCatalogUI();
         }
 
-        /* Interactive Drawer Popup Controller */
         function launchProductOptionsModal(productId) {
             const product = databaseState.find(p => p.id === productId);
             if(!product) return;
@@ -985,7 +983,6 @@
             document.getElementById('modalProductPrice').innerText = `Rs. ${product.price}`;
             document.getElementById('modalStepperCount').innerText = "1";
 
-            // Colors Parser Block
             const colorContainer = document.getElementById('colorSwatchesContainer');
             colorContainer.innerHTML = '';
             const variantsArrayColors = product.colors || ["Standard Tone"];
@@ -997,7 +994,6 @@
                 colorContainer.appendChild(span);
             });
 
-            // Sizes Parser Block
             const sizeContainer = document.getElementById('sizeSwatchesContainer');
             sizeContainer.innerHTML = '';
             const variantsArraySizes = product.sizes || ["Standard Size"];
@@ -1277,7 +1273,6 @@
 
             alert("Order Compiled! Your details are saved. Click OK to open WhatsApp and attach your receipt screenshot directly into our chat session!");
             
-            // Clean interface states safely
             runningCart = [];
             screenshotAttachedFlag = false;
             document.getElementById('checkoutExecutionForm').reset();
